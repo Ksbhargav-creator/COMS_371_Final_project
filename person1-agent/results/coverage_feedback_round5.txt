@@ -1,0 +1,314 @@
+Agent Round 4 cumulative branch coverage: 44.59%.
+
+Previous results:
+Round 1: 34.16%
+Round 2: 35.73%
+Round 3: 37.79%
+Round 4: 44.59%
+Claude-only baseline: 39.55%
+
+This is the FINAL large coverage-improvement round.
+
+Generate exactly 30 NEW tests.
+
+The command-line parsing logic in main is already highly covered.
+Do NOT spend most tests on ordinary grep options.
+
+The largest remaining coverage opportunities are inside:
+- regex_compile
+- re_match_2
+- lex
+- EGexecute
+- Fexecute
+- cwexec
+- kwsincr
+- DFA regex processing
+
+Prioritize deep regex and fixed-string behavior.
+
+==========================================================
+GROUP A — COMPLEX VALID BASIC REGEX (-G)
+==========================================================
+
+Generate several distinct valid -G tests using controlled stdin.
+
+Exercise:
+
+1. Beginning and end anchors:
+   ^pattern$
+   ^$
+   ^a
+   a$
+
+2. Basic groups:
+   \(ab\)
+
+3. Basic alternation:
+   a\|b
+
+4. Nested basic groups:
+   \(a\(b\)c\)
+
+5. Backreferences:
+   \(ab\)\1
+
+6. Multiple capture groups and backreferences:
+   \(a\)\(b\)\2\1
+
+7. Repetition:
+   a*
+   a\+
+   a\?
+   a\{2,4\}
+
+8. Nested repetition and groups.
+
+Use controlled matching AND nonmatching lines to force deeper execution.
+
+==========================================================
+GROUP B — COMPLEX EXTENDED REGEX (-E)
+==========================================================
+
+Generate several valid -E tests covering:
+
+- alternation |
+- groups ()
+- nested groups
+- +
+- ?
+- *
+- {m}
+- {m,n}
+- {m,}
+- anchors
+- nested repetition
+- optional groups
+- empty alternatives when supported
+
+Examples of useful pattern shapes:
+
+^(ab|cd)+$
+^(a+)(b*)$
+(foo|bar){2,4}
+a(b|c)?d
+(ab|a)*b
+^([a-z]+)([0-9]+)$
+
+Use controlled printf/echo stdin.
+
+==========================================================
+GROUP C — CHARACTER SETS AND POSIX CHARACTER CLASSES
+==========================================================
+
+Generate tests exercising different bracket parser paths:
+
+[a-z]
+[A-Z]
+[0-9]
+[^a-z]
+[]a]
+[-ab]
+[a-]
+[a-zA-Z0-9]
+[[:alpha:]]
+[[:digit:]]
+[[:alnum:]]
+[[:space:]]
+[[:punct:]]
+[[:upper:]]
+[[:lower:]]
+[[:xdigit:]]
+
+Combine some character classes with repetition and anchors.
+
+Use valid patterns for most tests.
+
+==========================================================
+GROUP D — WORD AND BOUNDARY REGEX BEHAVIOR
+==========================================================
+
+Target GNU/basic regex word-related operations where supported:
+
+\<word\>
+\bword\b
+\B
+\w
+\W
+
+Also combine regex patterns with:
+
+-w
+-x
+-i
+
+Use controlled stdin containing:
+- word alone
+- word embedded inside another word
+- punctuation beside word
+- upper/lowercase versions
+
+==========================================================
+GROUP E — BACKREFERENCE-HEAVY MATCHING
+==========================================================
+
+Backreferences are important because they force execution beyond the
+DFA fast path into deeper regex matching code.
+
+Generate several valid backreference tests such as:
+
+\(ab\)\1
+^\(a*\)\1$
+^\(ab\|cd\)\1$
+^\(a\)\(b\)\2\1$
+^\(.\)\1$
+^\([a-z]*\)-\1$
+
+Use input containing both successful and failed backreference cases.
+
+Where supported, also try an extended-regex capture/backreference case.
+
+==========================================================
+GROUP F — FIXED STRING ENGINE (-F)
+==========================================================
+
+Exercise deeper Fexecute/cwexec/keyword-set behavior.
+
+Generate commands with:
+
+-F
+-F -i
+-F -w
+-F -x
+-F -w -i
+-F -x -i
+
+Use multiple -e patterns in ONE grep execution.
+
+Include pattern sets with:
+
+- different lengths
+- common prefixes
+- prefix relationships
+- overlapping strings
+- single-character strings
+- long strings
+
+For example, one test may use many patterns such as:
+
+-e a
+-e ab
+-e abc
+-e abd
+-e b
+-e ba
+-e bar
+-e baz
+-e foo
+-e foobar
+
+Use controlled multiline stdin containing a mixture of matches and
+nonmatches.
+
+The goal is to exercise keyword tree construction, prefix handling,
+whole-word validation, and fixed-string execution branches.
+
+==========================================================
+GROUP G — MULTIPLE PATTERNS
+==========================================================
+
+Use several repeated -e arguments with regex matchers.
+
+Exercise multiple patterns joined internally by newline.
+
+Try combinations such as:
+
+-G -e PATTERN1 -e PATTERN2 -e PATTERN3
+-E -e PATTERN1 -e PATTERN2 -e PATTERN3
+-F -e STRING1 -e STRING2 -e STRING3
+
+Use structurally different patterns.
+
+==========================================================
+GROUP H — DISTINCT REGEX ERROR PATHS
+==========================================================
+
+Use only a limited number of tests for errors, but target DIFFERENT
+regex compile error paths.
+
+Possible targets:
+
+- unfinished bracket expression
+- invalid POSIX character class
+- invalid range
+- unfinished escape
+- unmatched group
+- invalid interval
+- reversed interval bounds
+- repetition operator without operand
+- nonexistent backreference
+- malformed extended group
+
+Do not generate several copies of the same error.
+
+==========================================================
+GROUP I — CONTEXT AND MATCH EXECUTION
+==========================================================
+
+Include a few controlled multiline stdin tests that combine complex
+patterns with:
+
+-A
+-B
+-C
+-v
+-w
+-x
+
+Use input designed so there are:
+- adjacent matches
+- separated matches
+- context before matches
+- context after matches
+- overlapping context groups
+
+==========================================================
+STRICT RULES
+==========================================================
+
+1. Generate exactly 30 tests.
+
+2. Every test must contain exactly ONE grep.exe execution.
+
+3. Pipes using printf, echo, or cat are allowed.
+
+4. Do NOT combine grep commands with:
+   ;
+   &&
+   ||
+
+5. Prefer controlled stdin with printf or echo whenever the exact
+   input content matters.
+
+6. Do not invent files.
+
+7. Avoid duplicating tests from Rounds 1-4.
+
+8. Most tests should be valid and reach deep execution paths.
+
+9. A small number of distinct malformed-regex tests are allowed to
+   target unique compilation error paths.
+
+10. Avoid branches requiring:
+    - malloc failure
+    - realloc failure
+    - mmap failure
+    - filesystem corruption
+    - stdout write failure
+    - impossible system failures
+
+11. Focus on NEW reachable branches, not simply generating more
+    variations of already-covered basic grep behavior.
+
+12. Make the test suite diverse enough to exercise the regex parser,
+    regex matcher, DFA engine, fixed-string keyword engine, word/line
+    boundaries, backreferences, and character classes.

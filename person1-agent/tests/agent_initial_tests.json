@@ -1,0 +1,64 @@
+{
+    "tests": [
+        {
+            "id": "AI001",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -n the ../inputs/grep0.dat",
+            "category": "basic matching",
+            "reason": "Targets the normal successful matching path with line number output"
+        },
+        {
+            "id": "AI002",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -c zzzzqqqq ../inputs/grep0.dat ../inputs/grep1.dat",
+            "category": "no-match cases",
+            "reason": "Exercises count output with no matches across multiple files with filename prefixes"
+        },
+        {
+            "id": "AI003",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -E -i -w 'a(b|c)+|[0-9]{2,}' ../inputs/grep0.dat",
+            "category": "extended regular expressions",
+            "reason": "Combines the egrep matcher with case-insensitive and word matching options"
+        },
+        {
+            "id": "AI004",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -F -x -e foo -e bar ../inputs/grep1.dat",
+            "category": "fixed strings",
+            "reason": "Exercises the fgrep matcher with multiple -e patterns and whole-line matching"
+        },
+        {
+            "id": "AI005",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -C 2 -b e ../inputs/grep0.dat",
+            "category": "context output",
+            "reason": "Exercises context lines with byte offsets, including group separators"
+        },
+        {
+            "id": "AI006",
+            "command": "cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -v -n a",
+            "category": "stdin",
+            "reason": "Reads from stdin with inverted matching and line numbers"
+        },
+        {
+            "id": "AI007",
+            "command": "../versions.alt/versions.orig/v0/grep.exe 'a\\(b' ../inputs/grep0.dat",
+            "category": "malformed patterns",
+            "reason": "Unmatched open group triggers regex compile error handling"
+        },
+        {
+            "id": "AI008",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -l -s hello ../inputs/nonexistent.dat ../inputs/grep0.dat ../inputs/grepDir/grep1.dat",
+            "category": "missing files",
+            "reason": "Tests missing file error suppression with -s combined with list-files mode"
+        },
+        {
+            "id": "AI009",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -A1 -B3 -h -y a ../inputs/grepBinary ../inputs/grepNull.dat",
+            "category": "unusual combinations of options",
+            "reason": "Targets binary and null-byte inputs with asymmetric context, -h and legacy -y"
+        },
+        {
+            "id": "AI010",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -L -q -f ../inputs/grep1.dat ../inputs/grepDir/grepNull.dat",
+            "category": "option combinations",
+            "reason": "Uses a pattern file with files-without-match and quiet mode to hit option interaction branches"
+        }
+    ]
+}

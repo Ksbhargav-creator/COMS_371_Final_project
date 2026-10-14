@@ -1,0 +1,184 @@
+{
+    "tests": [
+        {
+            "id": "R5-001",
+            "command": "printf 'ab\\nabab\\nxabx\\n\\nba\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '^\\(ab\\)\\1$'",
+            "category": "basic regex backref",
+            "reason": "Anchored group with backreference, match and nonmatch lines"
+        },
+        {
+            "id": "R5-002",
+            "command": "printf 'ab\\nabb\\nabba\\nabab\\nx\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '\\(a\\)\\(b\\)\\2\\1'",
+            "category": "multiple groups backref",
+            "reason": "Two capture groups and reversed backreferences"
+        },
+        {
+            "id": "R5-003",
+            "command": "printf 'a\\nb\\nc\\nab\\n\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -n '^a\\|b$'",
+            "category": "basic alternation",
+            "reason": "BRE alternation with anchors"
+        },
+        {
+            "id": "R5-004",
+            "command": "printf 'a\\naa\\naaa\\naaaa\\naaaaa\\nb\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -x 'a\\{2,4\\}'",
+            "category": "interval",
+            "reason": "BRE interval with -x"
+        },
+        {
+            "id": "R5-005",
+            "command": "printf 'abcabc\\nabc\\nxyz\\naac\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '\\(a\\(b\\)c\\)\\1'",
+            "category": "nested groups",
+            "reason": "Nested groups with backref to outer"
+        },
+        {
+            "id": "R5-006",
+            "command": "printf 'ab\\ncdcd\\nabcd\\nabab\\ncd\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '^(ab|cd)+$'",
+            "category": "ERE alternation",
+            "reason": "Group repetition with alternation"
+        },
+        {
+            "id": "R5-007",
+            "command": "printf 'aab\\nabbb\\nb\\nc\\n\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '^(a+)(b*)$'",
+            "category": "ERE groups",
+            "reason": "Adjacent groups with + and *"
+        },
+        {
+            "id": "R5-008",
+            "command": "printf 'foofoo\\nfoobarfoo\\nfoo\\nbarbarbarbarbar\\nxx\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '(foo|bar){2,4}'",
+            "category": "ERE interval",
+            "reason": "Interval on alternation group"
+        },
+        {
+            "id": "R5-009",
+            "command": "printf 'abd\\nacd\\nad\\nabcd\\n' | ../versions.alt/versions.orig/v0/grep.exe -E 'a(b|c)?d'",
+            "category": "ERE optional group",
+            "reason": "Optional group"
+        },
+        {
+            "id": "R5-010",
+            "command": "printf 'ab\\naab\\nb\\nabab\\naba\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '(ab|a)*b'",
+            "category": "ERE nested repetition",
+            "reason": "Star on alternation with prefix overlap"
+        },
+        {
+            "id": "R5-011",
+            "command": "printf 'abc123\\nabc\\n123\\nAbc1\\nx9y\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '^([a-z]+)([0-9]+)$'",
+            "category": "ERE classes",
+            "reason": "Class repetition groups"
+        },
+        {
+            "id": "R5-012",
+            "command": "printf 'ab\\nab\\nabab\\naa\\nabb\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '(a|ab)(c|bcd){0,}x*|^b{1}$|a{2,}'",
+            "category": "ERE intervals",
+            "reason": "{m}, {m,} and complex alternation"
+        },
+        {
+            "id": "R5-013",
+            "command": "printf ']\\na\\n-\\nb\\nz\\n\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '[]a]'",
+            "category": "bracket",
+            "reason": "Leading ] in bracket"
+        },
+        {
+            "id": "R5-014",
+            "command": "printf -- '-\\na\\nb\\nc\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -e '[-ab]' -e '[c-]'",
+            "category": "bracket",
+            "reason": "Leading and trailing dash in sets"
+        },
+        {
+            "id": "R5-015",
+            "command": "printf 'Abc\\n123\\nab 12\\n!!\\nxyz_\\nFF\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '^[[:upper:]][[:lower:]]+$|^[[:digit:]]+$|^[[:punct:]]+$'",
+            "category": "posix classes",
+            "reason": "upper, lower, digit, punct"
+        },
+        {
+            "id": "R5-016",
+            "command": "printf 'deadBEEF\\nxyz\\na b\\nab12\\n   \\n' | ../versions.alt/versions.orig/v0/grep.exe -E '^[[:xdigit:]]+$|[[:space:]]{2,}|^[[:alpha:]]+[[:alnum:]]*[^a-z]$'",
+            "category": "posix classes",
+            "reason": "xdigit, space, alnum, alpha, negation"
+        },
+        {
+            "id": "R5-017",
+            "command": "printf 'foo\\nfoobar\\nbar foo baz\\nfoo-bar\\nFOO\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '\\<foo\\>'",
+            "category": "word boundary",
+            "reason": "Word start/end operators"
+        },
+        {
+            "id": "R5-018",
+            "command": "printf 'foo\\nafoob\\nbar foo\\nfoo_x\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -i '\\bfoo\\b\\|\\Bfoo\\B'",
+            "category": "word boundary",
+            "reason": "\\b and \\B with -i"
+        },
+        {
+            "id": "R5-019",
+            "command": "printf 'ab_1\\n  \\n!!\\nab cd\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '\\w\\W\\w\\|^\\W*$'",
+            "category": "word classes",
+            "reason": "\\w and \\W"
+        },
+        {
+            "id": "R5-020",
+            "command": "printf 'aa\\nabab\\nabcdabcd\\ncdab\\nabcd\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -e '^\\(ab\\|cd\\)\\1$' -e '^\\(.\\)\\1$'",
+            "category": "backref multi",
+            "reason": "Backrefs in multiple patterns"
+        },
+        {
+            "id": "R5-021",
+            "command": "printf 'abc-abc\\nabc-abd\\n-\\nx-x\\nxy-x\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '^\\([a-z]*\\)-\\1$'",
+            "category": "backref",
+            "reason": "Star group backref"
+        },
+        {
+            "id": "R5-022",
+            "command": "printf 'abab\\nabba\\nxx\\naa\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '(a)(b)\\2\\1|(x)\\3'",
+            "category": "ERE backref",
+            "reason": "Extended backreference"
+        },
+        {
+            "id": "R5-023",
+            "command": "printf 'a\\nab\\nabc\\nabd\\nb\\nba\\nbar\\nbaz\\nfoo\\nfoobar\\nqq\\nzzz\\n' | ../versions.alt/versions.orig/v0/grep.exe -F -e a -e ab -e abc -e abd -e b -e ba -e bar -e baz -e foo -e foobar",
+            "category": "fixed multi",
+            "reason": "Keyword tree with prefixes"
+        },
+        {
+            "id": "R5-024",
+            "command": "printf 'foo bar\\nfoobar\\nxfoo\\nfoo_\\nbar,baz\\nBAR\\n' | ../versions.alt/versions.orig/v0/grep.exe -F -w -i -e foo -e bar -e baz -e foobarx",
+            "category": "fixed word",
+            "reason": "Fexecute whole-word check with -i"
+        },
+        {
+            "id": "R5-025",
+            "command": "printf 'foo\\nfoo bar\\nFOO\\nbar\\nbarn\\nb\\n' | ../versions.alt/versions.orig/v0/grep.exe -F -x -i -e foo -e bar -e b -e fo",
+            "category": "fixed line",
+            "reason": "Fexecute -x -i with multiple keywords"
+        },
+        {
+            "id": "R5-026",
+            "command": "printf 'one\\ntwo\\nmatch1\\nthree\\nfour\\nfive\\nmatch2\\nmatch3\\nsix\\nseven\\neight\\nmatch4\\n' | ../versions.alt/versions.orig/v0/grep.exe -E -n -C1 -e 'match[1-2]' -e 'match4$'",
+            "category": "context",
+            "reason": "Overlapping and separated context groups"
+        },
+        {
+            "id": "R5-027",
+            "command": "printf 'aXb\\nab\\nacb\\nxx\\nab ab\\nb\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -v -w -A1 -B1 'a.b\\|ab'",
+            "category": "context invert",
+            "reason": "Invert with word and context"
+        },
+        {
+            "id": "R5-028",
+            "command": "printf 'abc\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '[[:foo:]]'",
+            "category": "error",
+            "reason": "Invalid character class name"
+        },
+        {
+            "id": "R5-029",
+            "command": "printf 'abc\\n' | ../versions.alt/versions.orig/v0/grep.exe -E 'a{3,1}'",
+            "category": "error",
+            "reason": "Reversed interval bounds"
+        },
+        {
+            "id": "R5-030",
+            "command": "printf 'abc\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '\\(a\\)\\2'",
+            "category": "error",
+            "reason": "Nonexistent backreference"
+        }
+    ]
+}

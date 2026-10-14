@@ -1,0 +1,64 @@
+{
+    "tests": [
+        {
+            "id": "R4-001",
+            "command": "echo needle | ../versions.alt/versions.orig/v0/grep.exe -l needle",
+            "category": "option combinations",
+            "reason": "Targets -l success with implicit stdin printing (standard input)"
+        },
+        {
+            "id": "R4-002",
+            "command": "printf 'foo\\nbar\\n' | ../versions.alt/versions.orig/v0/grep.exe -G -x foo",
+            "category": "matcher selection",
+            "reason": "Basic matcher with whole-line matching setup and successful execution"
+        },
+        {
+            "id": "R4-003",
+            "command": "printf 'foo\\nbar\\nbaz\\n' | ../versions.alt/versions.orig/v0/grep.exe -E -x 'foo|bar'",
+            "category": "extended regular expressions",
+            "reason": "Extended matcher with whole-line matching and alternation"
+        },
+        {
+            "id": "R4-004",
+            "command": "printf 'foobar\\nfoo\\n' | ../versions.alt/versions.orig/v0/grep.exe -F -x foo",
+            "category": "fixed strings",
+            "reason": "Fixed-string whole-line: rejects partial line, accepts full line"
+        },
+        {
+            "id": "R4-005",
+            "command": "printf 'xfoo\\nfoo!\\n' | ../versions.alt/versions.orig/v0/grep.exe -F -w foo",
+            "category": "fixed strings",
+            "reason": "Fixed-string whole-word: embedded rejected, standalone accepted"
+        },
+        {
+            "id": "R4-006",
+            "command": "printf 'abab\\nabac\\n' | ../versions.alt/versions.orig/v0/grep.exe -G '\\(ab\\)\\1'",
+            "category": "regular expressions",
+            "reason": "Basic regex backreference exercising regex verification path"
+        },
+        {
+            "id": "R4-007",
+            "command": "printf 'abab\\nabac\\nxyxy\\n' | ../versions.alt/versions.orig/v0/grep.exe -E '(ab|xy)\\1'",
+            "category": "extended regular expressions",
+            "reason": "Extended regex backreference with matching and nonmatching lines"
+        },
+        {
+            "id": "R4-008",
+            "command": "printf 'a\\nb\\nc\\nMATCH\\nz\\n' | ../versions.alt/versions.orig/v0/grep.exe -B 3 MATCH",
+            "category": "context output",
+            "reason": "Before-context loop with several preceding lines"
+        },
+        {
+            "id": "R4-009",
+            "command": "echo -- -x | ../versions.alt/versions.orig/v0/grep.exe -- -x",
+            "category": "option combinations",
+            "reason": "End-of-options handling with pattern beginning with dash"
+        },
+        {
+            "id": "R4-010",
+            "command": "echo hello world | POSIXLY_CORRECT=1 ../versions.alt/versions.orig/v0/grep.exe hello",
+            "category": "option combinations",
+            "reason": "POSIXLY_CORRECT getopt behavior followed by normal matching"
+        }
+    ]
+}

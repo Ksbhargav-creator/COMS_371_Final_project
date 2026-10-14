@@ -1,0 +1,2 @@
+I'll check the environment first, then validate the tests by running them.
+No `make` here, so I'll build with gcc directly. I'll put the binary in a scratch copy to check the tests, then write them out.

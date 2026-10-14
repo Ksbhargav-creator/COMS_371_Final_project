@@ -1,0 +1,2 @@
+I'll start by looking at the package.
+No C compiler is available, so I'll design the tests by reading the source. First I'll map its structure.

@@ -1,0 +1,160 @@
+Agent Round 3 cumulative branch coverage: 37.79%.
+
+Previous coverage:
+Round 1: 34.16%
+Round 2: 35.73%
+Round 3: 37.79%
+Claude-only baseline: 39.55%
+
+This is the final focused feedback round.
+
+Generate exactly 10 new tests designed to cover reachable branches that
+remain uncovered after Rounds 1, 2, and 3.
+
+Round 4 should prioritize VALID executions that go deep into grep rather
+than immediately terminating through usage or fatal error handling.
+
+Use controlled stdin with echo or printf whenever possible so that we know
+whether the input will match or not match.
+
+PRIORITY TARGETS:
+
+1. Successful -l with implicit standard input
+
+The branch that prints "(standard input)" when -l finds a match is still
+uncovered.
+
+Use controlled input that is guaranteed to match.
+
+Target behavior similar to:
+
+echo "needle" | grep -l needle
+
+Do NOT use a file operand.
+
+2. Basic grep matcher with whole-line matching
+
+Exercise -G together with -x using controlled stdin.
+
+Target both the whole-line matcher setup and successful execution.
+
+Example behavior:
+
+printf "foo\nbar\n" | grep -G -x foo
+
+3. Extended matcher with whole-line matching
+
+Exercise -E together with -x using controlled stdin.
+
+Example behavior:
+
+printf "foo\nbar\n" | grep -E -x 'foo|bar'
+
+4. Fixed-string whole-line behavior
+
+Exercise -F -x with input containing:
+- one line where the fixed string is only part of the line
+- another line where it is the entire line
+
+Example input behavior:
+
+foobar
+foo
+
+Pattern:
+
+foo
+
+This should exercise both rejection of a partial line and successful
+whole-line matching.
+
+5. Fixed-string whole-word behavior
+
+Exercise -F -w using controlled input where:
+- one occurrence is embedded inside another word
+- another occurrence is a valid standalone word
+
+Example input:
+
+xfoo
+foo!
+
+Pattern:
+
+foo
+
+6. Basic-regex backreference execution
+
+Use -G with a valid backreference pattern and controlled matching input.
+
+Target behavior similar to:
+
+input:
+abab
+abac
+
+pattern:
+\(ab\)\1
+
+The goal is to exercise deeper regex/backreference logic rather than
+only ordinary DFA matching.
+
+7. Extended-regex backreference behavior
+
+Try a valid extended-regex backreference using -E with controlled input
+if supported by this grep implementation.
+
+Use a matching and nonmatching line so deeper regex verification paths
+can execute.
+
+8. Before-context processing
+
+Use controlled multiline stdin with a match after several preceding lines.
+
+Example behavior:
+
+a
+b
+c
+MATCH
+z
+
+with:
+
+-B 3 MATCH
+
+The goal is to exercise remaining before-context loop branches.
+
+9. End-of-options "--" handling
+
+Exercise getopt handling of "--".
+
+Use a pattern beginning with "-" and controlled stdin.
+
+Example behavior:
+
+echo "-x" | grep -- "-x"
+
+10. POSIXLY_CORRECT getopt behavior
+
+Run one valid grep command with POSIXLY_CORRECT=1 set for that execution.
+
+Use controlled stdin and normal matching so grep continues into regular
+execution after option parsing.
+
+IMPORTANT RULES:
+
+- Generate exactly 10 tests.
+- Every test must contain exactly ONE grep.exe execution.
+- Pipes using echo, printf, or cat are allowed.
+- Do NOT combine multiple grep.exe commands with semicolons.
+- Do NOT use && or || to chain grep executions.
+- Do NOT invent input files.
+- Prefer controlled stdin over unknown file contents when targeting a
+  specific match/no-match condition.
+- Avoid duplicating Round 1, Round 2, or Round 3 commands.
+- Avoid malloc failure, mmap failure, stdout failure, and other
+  environment-dependent branches.
+- Avoid spending most tests on intentional fatal/usage errors.
+- Most tests should return exit code 0 or 1 and reach deep program logic.
+- The goal is maximum NEW branch coverage, not simply more test cases.
