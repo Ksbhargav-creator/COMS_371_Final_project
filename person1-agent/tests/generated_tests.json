@@ -1,0 +1,34 @@
+{
+    "tests": [
+        {
+            "id": "AI001",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -n -i -C 2 the ../inputs/grep0.dat ../inputs/grep1.dat",
+            "category": "context output with multiple files",
+            "reason": "Exercises case-insensitive matching, line numbers, context printing and filename prefixes across multiple files"
+        },
+        {
+            "id": "AI002",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -E -c -w \"(a|b)+[0-9]*\" ../inputs/grep0.dat ../inputs/grepNull.dat",
+            "category": "extended regular expressions",
+            "reason": "Targets the extended regex matcher with word matching and count output across multiple files, including a file with null bytes"
+        },
+        {
+            "id": "AI003",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -F -x -v -e foo -e bar ../inputs/grepBinary",
+            "category": "fixed strings with binary input",
+            "reason": "Exercises the fixed-string matcher with multiple patterns, whole-line matching and inversion on binary data"
+        },
+        {
+            "id": "AI004",
+            "command": "../versions.alt/versions.orig/v0/grep.exe \"\\(unclosed\" ../inputs/missing_file.dat ../inputs/grep0.dat",
+            "category": "malformed pattern and missing file",
+            "reason": "Triggers regex compile error handling for an unmatched parenthesis and a missing-file error path"
+        },
+        {
+            "id": "AI005",
+            "command": "cat ../inputs/grep1.dat | ../versions.alt/versions.orig/v0/grep.exe -l -b -s -e line - ../inputs/grepDir/grep0.dat",
+            "category": "stdin and unusual option combination",
+            "reason": "Reads from stdin via '-' alongside a file, combining list-files, byte offset and silent options"
+        }
+    ]
+}

@@ -1,0 +1,39 @@
+[
+    {
+        "round": 1,
+        "type": "initial_generation",
+        "input_tokens": 697,
+        "output_tokens": 1166,
+        "stop_reason": "end_turn"
+    },
+    {
+        "round": 2,
+        "type": "coverage_guided_generation",
+        "input_tokens": 1928,
+        "output_tokens": 1203,
+        "stop_reason": "end_turn"
+    },
+    {
+        "round": 3,
+        "type": "focused_coverage_guided_generation",
+        "input_tokens": 1938,
+        "output_tokens": 1106,
+        "stop_reason": "end_turn"
+    },
+    {
+        "round": 4,
+        "type": "final_focused_coverage_generation",
+        "input_tokens": 2160,
+        "output_tokens": 1113,
+        "stop_reason": "end_turn"
+    },
+    {
+        "round": 5,
+        "type": "final_bulk_targeted_coverage_generation",
+        "requested_tests": 30,
+        "generated_tests": 30,
+        "input_tokens": 3289,
+        "output_tokens": 3451,
+        "stop_reason": "end_turn"
+    }
+]

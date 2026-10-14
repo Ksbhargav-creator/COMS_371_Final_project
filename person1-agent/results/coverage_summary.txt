@@ -1,0 +1,27 @@
+Claude-only baseline
+Branch coverage: 39.55%
+
+Agent Round 1
+10 cumulative tests
+Branch coverage: 34.16%
+
+Agent Round 2
+20 cumulative tests
+Branch coverage: 35.73%
+Improvement from Round 1: +1.57 percentage points
+
+Agent Round 3
+30 cumulative tests
+Branch coverage: 37.79%
+Improvement from Round 2: +2.06 percentage points
+
+Agent Round 4
+40 cumulative tests
+Branch coverage: 44.59%
+Improvement from Round 3: +6.80 percentage points
+
+Total improvement from Round 1 to Round 4:
++10.43 percentage points
+
+Agent Round 4 vs Claude-only baseline:
++5.04 percentage points

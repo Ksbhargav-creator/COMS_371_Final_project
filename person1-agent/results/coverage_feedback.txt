@@ -1,0 +1,77 @@
+Agent Round 1 branch coverage: 34.16%
+10 tests were executed.
+
+Prioritize the following uncovered or partially uncovered areas from grep.c:
+
+1. Numeric context option handling
+   - Lines 659-671
+   - The shorthand numeric options -0 through -9 were not exercised.
+   - Lines 669-670 that update out_before/out_after were not executed.
+
+2. Invalid negative context arguments
+   - Line 674: branch for out_after < 0 was not taken.
+   - Line 675: usage() was not reached.
+   - Line 679: branch for out_before < 0 was not taken.
+   - Line 680: usage() was not reached.
+   - Generate tests involving negative -A and -B arguments.
+
+3. Conflicting matcher selections
+   - Lines 686-687: conflict involving -E was not exercised.
+   - Lines 691-692: conflict involving -F was not exercised.
+   - Lines 695-699: explicit -G path was not exercised.
+   - Generate combinations such as -E/-F, -E/-G, and -F/-G.
+
+4. Version and explicit matcher selection
+   - Lines 700-702: -V version path was not executed.
+   - Lines 703-707: -X matcher-selection path was not executed.
+   - Include valid and conflicting -X matcher cases.
+
+5. Pattern-file handling with -f
+   - Line 725: using stdin as the pattern file (-f -) was not exercised.
+   - Lines 726-727: failure to open a pattern file was not exercised.
+   - Additional -f branches involving existing patterns and multiple pattern sources remain uncovered.
+
+6. Usage/error handling
+   - Lines 783-784: default/invalid-option usage path was not executed.
+   - Lines 789-795: missing-pattern / missing-expression usage path was not exercised.
+   - Generate tests intentionally using invalid options or missing required arguments.
+
+7. Explicit standard-input file handling
+   - Line 813: the branch where the filename argument is "-" was not taken.
+   - Existing stdin testing used a pipe without explicitly supplying "-".
+   - Generate tests such as piping data while passing "-" as the file operand.
+
+8. Count output with multiple files
+   - Lines 823-827 contain partially uncovered branches.
+   - In particular, count output combined with filename output needs additional coverage.
+   - Generate -c tests involving multiple input files.
+
+9. File-listing behavior
+   - Lines 829-836 contain uncovered list-files behavior.
+   - Generate cases where -l actually finds a match.
+   - Generate cases where -L actually finds a file with no matches.
+   - Try these across multiple files.
+
+10. Standard-input output modes
+    - Lines 846-855 contain uncovered branches.
+    - Generate stdin tests combined with:
+      - -c
+      - -l
+      - -L
+      - matching and nonmatching input.
+
+11. Regex compilation
+    - regex_compile was executed but many internal branches remain uncovered.
+    - Generate diverse patterns targeting:
+      - malformed expressions
+      - bracket expressions
+      - anchors
+      - repetitions
+      - alternation
+      - groups
+      - intervals
+      - backreferences
+      - empty patterns
+      - unusual combinations with -E, -G, -w, and -x.
+
+Avoid wasting tests on branches that are probably environment-dependent or impractical to trigger through normal grep command-line inputs, such as memory-allocation failure, getpagesize failure, mmap failure, stdout write failure, and similar system failures.

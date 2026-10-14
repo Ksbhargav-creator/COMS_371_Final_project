@@ -1,0 +1,21 @@
+id,status,exit_code,seconds,stderr,command
+AI001,ok,1,0.268,,../versions.alt/versions.orig/v0/grep.exe -n the ../inputs/grep0.dat
+AI002,ok,1,0.004,,../versions.alt/versions.orig/v0/grep.exe -c zzzzqqqq ../inputs/grep0.dat ../inputs/grep1.dat
+AI003,ok,1,0.011,,"../versions.alt/versions.orig/v0/grep.exe -E -i -w 'a(b|c)+|[0-9]{2,}' ../inputs/grep0.dat"
+AI004,ok,1,0.004,,../versions.alt/versions.orig/v0/grep.exe -F -x -e foo -e bar ../inputs/grep1.dat
+AI005,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -C 2 -b e ../inputs/grep0.dat
+AI006,ok,0,0.003,,cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -v -n a
+AI007,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe 'a\(b' ../inputs/grep0.dat
+AI008,ok,1,0.005,,../versions.alt/versions.orig/v0/grep.exe -l -s hello ../inputs/nonexistent.dat ../inputs/grep0.dat ../inputs/grepDir/grep1.dat
+AI009,ok,0,0.004,,../versions.alt/versions.orig/v0/grep.exe -A1 -B3 -h -y a ../inputs/grepBinary ../inputs/grepNull.dat
+AI010,error,2,0.005,,../versions.alt/versions.orig/v0/grep.exe -L -q -f ../inputs/grep1.dat ../inputs/grepDir/grepNull.dat
+AI011,ok,1,0.003,,../versions.alt/versions.orig/v0/grep.exe -2 -n grep ../inputs/grep0.dat
+AI012,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -A -1 grep ../inputs/grep0.dat
+AI013,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -E -F grep ../inputs/grep0.dat
+AI014,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -G -E grep ../inputs/grep0.dat
+AI015,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -V
+AI016,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -X egrep -B -3 grep ../inputs/grep0.dat
+AI017,ok,0,0.004,,echo grep | ../versions.alt/versions.orig/v0/grep.exe -f - ../inputs/grep0.dat ../inputs/grep1.dat
+AI018,error,2,0.003,,../versions.alt/versions.orig/v0/grep.exe -f ../inputs/nonexistent.pat ../inputs/grep0.dat
+AI019,ok,0,0.005,,cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -c grep - ../inputs/grep1.dat
+AI020,error,2,0.01,,cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -l grep - ../inputs/grep1.dat ../inputs/grepNull.dat; ../versions.alt/versions.orig/v0/grep.exe -L zzzqqq ../inputs/grep0.dat ../inputs/grep1.dat; ../versions.alt/versions.orig/v0/grep.exe -Z

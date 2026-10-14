@@ -1,0 +1,64 @@
+{
+    "tests": [
+        {
+            "id": "R3-001",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -E -E 'a|b' ../inputs/grep0.dat",
+            "category": "repeated matcher selection",
+            "reason": "Repeated -E selection succeeds and exercises the same-matcher branch with the extended regex matcher"
+        },
+        {
+            "id": "R3-002",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -F -F -n -i the ../inputs/grep1.dat",
+            "category": "repeated matcher selection",
+            "reason": "Repeated -F with fixed-string matching, line numbers and case-insensitivity"
+        },
+        {
+            "id": "R3-003",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -G -G -w -n the ../inputs/grep0.dat",
+            "category": "repeated matcher selection",
+            "reason": "Repeated -G with word matching exercises the basic matcher through a valid path"
+        },
+        {
+            "id": "R3-004",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -F -G the ../inputs/grep0.dat",
+            "category": "matcher conflict",
+            "reason": "Targets the -G conflict branch when -F was already selected"
+        },
+        {
+            "id": "R3-005",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -E -X egrep the ../inputs/grep0.dat",
+            "category": "matcher conflict",
+            "reason": "Targets the -X conflict branch when another matcher was already selected"
+        },
+        {
+            "id": "R3-006",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -X egrep -b -v 'a+' ../inputs/grep1.dat",
+            "category": "explicit matcher",
+            "reason": "Successful -X egrep selection combined with byte offsets and invert match"
+        },
+        {
+            "id": "R3-007",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -e the -f ../inputs/grep1.dat -c ../inputs/grep0.dat",
+            "category": "pattern sources",
+            "reason": "Combines -e with -f so a pattern already exists when the pattern file is read, plus single-file count output"
+        },
+        {
+            "id": "R3-008",
+            "command": "cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -c the",
+            "category": "stdin count",
+            "reason": "Count from implicit stdin with no file operand"
+        },
+        {
+            "id": "R3-009",
+            "command": "cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -l the",
+            "category": "stdin list matching",
+            "reason": "-l with implicit stdin where a match exists"
+        },
+        {
+            "id": "R3-010",
+            "command": "echo 'hello world' | ../versions.alt/versions.orig/v0/grep.exe -L zzzqqq",
+            "category": "stdin list non-matching",
+            "reason": "-L with implicit stdin where the pattern is absent"
+        }
+    ]
+}

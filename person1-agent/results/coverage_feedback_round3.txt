@@ -1,0 +1,139 @@
+Agent Round 2 cumulative branch coverage: 35.73%.
+
+Round 1 coverage was 34.16%, so Round 2 improved coverage by
+1.57 percentage points.
+
+The Claude-only baseline achieved 39.55% branch coverage.
+
+Generate a focused Round 3 test suite intended to increase branch
+coverage beyond 35.73%.
+
+Round 2 contained several tests that intentionally triggered usage
+or error paths and exited early. For Round 3, prioritize VALID grep
+commands that continue deeper into program execution.
+
+Avoid repeating tests already covered by Rounds 1 and 2.
+
+TARGET AREAS:
+
+1. Successful explicit matcher execution
+
+Generate valid tests that use these matcher options individually:
+
+-E
+-F
+-G
+-X egrep
+
+Do not combine these successful matcher tests with invalid arguments
+that would terminate grep early.
+
+2. Repeated identical matcher selection
+
+Try valid combinations such as:
+
+-F -F
+-G -G
+-E -E
+
+These may exercise matcher-selection branches without triggering
+conflicting matcher errors.
+
+3. -G matcher conflict
+
+Target the still-uncovered conflict path involving -G.
+
+Examples of behaviors to investigate:
+
+-F -G
+-E -G
+
+Only use a small number of intentional error tests. Most Round 3
+tests should execute successfully.
+
+4. -X matcher conflict
+
+Target the branch where another matcher is selected before -X.
+
+Example behavior:
+
+-E -X egrep
+
+5. Combine -e and -f
+
+Generate a test containing both:
+
+-e PATTERN
+-f EXISTING_PATTERN_FILE
+
+Use only the existing input files provided with the grep package.
+
+This should target pattern-processing behavior where a pattern has
+already been supplied before the -f pattern file is processed.
+
+6. Single-file count behavior
+
+Generate a valid command using:
+
+-c
+
+with exactly ONE input file.
+
+Previous tests exercised count behavior with multiple files. Target
+the single-file output branch.
+
+7. Count from implicit standard input
+
+Generate a valid command equivalent to:
+
+cat INPUT | grep -c PATTERN
+
+Do NOT include an explicit "-" file operand for this test.
+
+8. -l from implicit standard input
+
+Generate a stdin test using -l where the input DOES contain a match.
+
+Do not supply a file operand.
+
+9. -L from implicit standard input
+
+Generate a stdin test using -L where the input DOES NOT contain
+the requested pattern.
+
+Do not supply a file operand.
+
+10. Valid deeper-execution combinations
+
+Generate useful combinations involving:
+
+-i
+-w
+-x
+-v
+-n
+-b
+-c
+-l
+-L
+-E
+-F
+-G
+
+Prefer combinations that allow grep to process the input normally
+instead of immediately terminating through usage() or error handling.
+
+IMPORTANT RULES:
+
+- Generate exactly 10 tests.
+- Each test must contain only ONE grep.exe execution.
+- Do NOT combine several grep commands using semicolons.
+- Do NOT use && or || to combine grep executions.
+- Pipes such as "cat file | grep ..." or "echo text | grep ..." are allowed.
+- Do not invent input files.
+- Use only input files known to exist in the supplied grep package.
+- Avoid environment-dependent branches such as malloc failure,
+  mmap failure, write failure, or other system-level failures.
+- Prefer reachable command-line branches.
+- Most Round 3 tests should be valid executions rather than intentional errors.
+- Avoid duplicating Round 1 and Round 2 tests.

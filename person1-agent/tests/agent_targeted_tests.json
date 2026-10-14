@@ -1,0 +1,64 @@
+{
+    "tests": [
+        {
+            "id": "AI001",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -2 -n grep ../inputs/grep0.dat",
+            "category": "numeric context",
+            "reason": "Exercises numeric shorthand context option -2 updating out_before/out_after (lines 659-671)"
+        },
+        {
+            "id": "AI002",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -A -1 grep ../inputs/grep0.dat",
+            "category": "invalid context argument",
+            "reason": "Negative -A argument triggers out_after < 0 usage path"
+        },
+        {
+            "id": "AI003",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -E -F grep ../inputs/grep0.dat",
+            "category": "matcher conflict",
+            "reason": "Conflicting matcher selection -E then -F exercises conflict/usage branches"
+        },
+        {
+            "id": "AI004",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -G -E grep ../inputs/grep0.dat",
+            "category": "matcher conflict",
+            "reason": "Explicit -G path followed by conflicting -E"
+        },
+        {
+            "id": "AI005",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -V",
+            "category": "version",
+            "reason": "Exercises the -V version output path"
+        },
+        {
+            "id": "AI006",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -X egrep -B -3 grep ../inputs/grep0.dat",
+            "category": "matcher selection / negative before-context",
+            "reason": "Exercises -X matcher selection and the out_before < 0 usage path"
+        },
+        {
+            "id": "AI007",
+            "command": "echo grep | ../versions.alt/versions.orig/v0/grep.exe -f - ../inputs/grep0.dat ../inputs/grep1.dat",
+            "category": "pattern file from stdin",
+            "reason": "Uses stdin as pattern file (-f -) with multiple input files"
+        },
+        {
+            "id": "AI008",
+            "command": "../versions.alt/versions.orig/v0/grep.exe -f ../inputs/nonexistent.pat ../inputs/grep0.dat",
+            "category": "error handling",
+            "reason": "Failure to open pattern file branch"
+        },
+        {
+            "id": "AI009",
+            "command": "cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -c grep - ../inputs/grep1.dat",
+            "category": "stdin and count with multiple files",
+            "reason": "Explicit '-' file operand plus -c with filename output for multiple files"
+        },
+        {
+            "id": "AI010",
+            "command": "cat ../inputs/grep0.dat | ../versions.alt/versions.orig/v0/grep.exe -l grep - ../inputs/grep1.dat ../inputs/grepNull.dat; ../versions.alt/versions.orig/v0/grep.exe -L zzzqqq ../inputs/grep0.dat ../inputs/grep1.dat; ../versions.alt/versions.orig/v0/grep.exe -Z",
+            "category": "list files and usage",
+            "reason": "Covers -l and -L list-file behavior on stdin/multiple files plus invalid option usage path"
+        }
+    ]
+}
